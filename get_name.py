@@ -6,23 +6,7 @@ import time
 do_print = False
 
 # Clear the screen
-os.system('clear')
-
-# Students are now in a student_list.txt file and can be updated on the fly
-# students = [
-#     'Glen',
-#     'Daniel',
-#     'Garfield',
-#     'Michael-H',
-#     'Kevin',
-#     'Marie',
-#     'Tony',
-#     'Michael-R',
-#     'Prabin',
-#     'Davee',
-#     'Wondwosen',
-#     'Anthony-W',
-# ]
+clear = lambda: os.system('clear')
 
 students = []
 
@@ -34,6 +18,7 @@ with open('student_list.txt') as student_list:
         students.append(each)
 
 def student_selector():
+    clear()
     # Updated after the random choice
     completed_students = []
 
@@ -62,7 +47,7 @@ def student_selector():
     # If all the students have already been called on and stored in the saved_students.txt this will show up:
     if len(students_left) == 0:
         print('All students have already gone, check saved_students.txt.\n')
-        choice = input('Would you like to: \nClear the saved list and run this again (c)\nExit (e) \n')
+        choice = input('Would you like to: \n1) Clear the saved list and run this again \n2) Exit \n')
         if choice == 'c':
             clear_chosen()
             student_selector()
@@ -76,8 +61,8 @@ def student_selector():
         completed_students.append(students_left[0])
         save_chosen(completed_students)
         print('All students have already been chosen once. \n')
-        choice = input('Would you like to: \nClear the saved list and run this again (c)\nExit (e) \n')
-        if choice == 'c':
+        choice = input('Would you like to: \n1) Clear the saved list and run this again \n2) Exit \n')
+        if choice == '1':
             clear_chosen()
             student_selector()
         else:
@@ -127,13 +112,14 @@ def student_selector():
         save_chosen(completed_students)
         print('saved_students.txt has been updated.')
 
-        save_or_choose = input('Would you like to: \nChoose a new student (y) \nClear the saved list and run this again (c)\nExit (e)\n')
-        if save_or_choose == 'y':
+        save_or_choose = input('Would you like to: \n1) Choose a new student\n2) Clear the saved list and run this again\n3) Exit\n')
+        if save_or_choose == '1':
             student_selector()
-        elif save_or_choose == 'c':
+        elif save_or_choose == '2':
             student_selector()
         else:
-            print('Exiting, thanks for using the app!')
+            print('Exiting')
+            
             return
 
 
@@ -146,26 +132,7 @@ def save_chosen(save_students):
             students_to_save += f'{each} '
         to_save.write(students_to_save)
 
-# def update_chosen_file(prev_chosen_students):
-
-#     ## Logic for writing each student's name to a file.
-#     # with open('student_list.txt', 'w') as studend_list:   
-#     #     all_students = ''
-
-#     #     for each_student in students:
-#     #         all_students += f'{each_student} '
-#     #     studend_list.write(all_students)
-
-#     with open('chosen_students.txt', 'w') as chosen_already:
-#         already_called = ''
-#         for each_student in prev_chosen_students:
-#             already_called += f'{each_student} '
-#         chosen_already.write(already_called)
-
 def clear_chosen():
     with open('saved_students.txt', 'w') as chosen_already:
         already_called = ''
         chosen_already.write(already_called)
-
-# intially start student_selector when the program is ran with python get_name.py in the terminal
-student_selector()
