@@ -1,15 +1,22 @@
+import os
 import random
 import re
 
-students = []
+clear = lambda: os.system('clear')
+
 prev_groups = []
 
 # Getting all the students from the student_list.txt
-with open('student_list.txt') as student_list:
-    read_students = student_list.read()
-    split_students = read_students.split()
-    for each in split_students:
-        students.append(each)
+def get_students():
+    students = []
+
+    with open('student_list.txt') as student_list:
+        read_students = student_list.read()
+        split_students = read_students.split()
+        for each in split_students:
+            students.append(each)
+    
+    return students
 
 with open("prev_group.txt") as prev_group:
     read_group = prev_group.read()
@@ -44,6 +51,7 @@ def get_random_pairs(students: list, students_per_group: int = 4) -> str:
     Returns:
         str: Students divided into groups
     """
+    clear()
 
     random.shuffle(students)
     number_of_groups = len(students) // students_per_group - 1
@@ -60,7 +68,12 @@ def get_random_pairs(students: list, students_per_group: int = 4) -> str:
         group += 1
 
     save_group(output)
-    return stringify(output)
+    print(stringify(output))
+    choice = input('Would you like to:\n1) Choose new groups\n2) Exit?\n')
+    if choice == '1':
+        get_random_pairs(students, 2)
+    else:
+        return
 
 def save_group(save_students):
     with open('prev_group.txt', 'w') as to_save:
@@ -68,24 +81,4 @@ def save_group(save_students):
         for each in save_students:
             groups_to_save += f'{each}'
         to_save.write(groups_to_save)
-
-
-if __name__ == "__main__":
-    group_number = input('How many students per group? \nOr press enter for 2 \n')
-    # if group_number == "":
-    #     group_number = 2
-    # else:
-    while type(group_number) != int:
-        if group_number == "":
-            group_number = 2
-        try:
-            group_number = int(group_number)
-            # group = get_random_pairs(students, group_number)
-            # print(group)
-        except ValueError:
-            print('Not an integer')
-            group_number = input('How many students per group? \nOr press enter for 2 \n')
-
-    group = get_random_pairs(students, group_number)
-    print(group)
 
